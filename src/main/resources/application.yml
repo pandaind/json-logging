@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+debug: true
+
+spring:
+  profiles:
+    active: default, kubernetes
+
+  application:
+    name: demo-app
+    version: @project.version@
+
+#logging:
+#  pattern:
+#    console: "{\"time\": \"%d\", \"level\": \"%p\", \"%t\": \"%logger{63}:%L\", \"message\": \"%replace(%m%wEx{6}){'[\r\n]+', '\\n'}%nopex\"}%n"

@@ -1,0 +1,47 @@
+<configuration>
+    <!--Standalone Configuration-->
+    <springProfile name="standalone">
+        <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    </springProfile>
+
+    <!--Kubernetes Configuration-->
+    <springProperty name="application-name" source="spring.application.name"/>
+    <springProperty name="application-version" source="spring.application.version"/>
+
+    <springProfile name="kubernetes">
+        <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <customFields>{"application-name":"${application-name}"}</customFields>
+                <version>${application-version}</version>
+                <writeVersionAsInteger>false</writeVersionAsInteger>
+                <shortenedLoggerNameLength>36</shortenedLoggerNameLength>
+                <timeZone>UTC</timeZone>
+                <fieldNames>
+                    <!--<version>[ignore]</version>-->
+                    <levelValue>[ignore]</levelValue>
+                </fieldNames>
+
+                <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                    <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                    <maxLength>2048</maxLength>
+                    <shortenedClassNameLength>20</shortenedClassNameLength>
+                    <rootCauseFirst>true</rootCauseFirst>
+                </throwableConverter>
+
+                <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+
+                <!--Masking-->
+               <!-- <jsonGeneratorDecorator class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+                    <defaultMask>****</defaultMask>
+                    <paths>/password,/secret,/pin,/email,/contact,/phone,/pin</paths>
+                    <valueMasker class="com.example.demo.config.SensitiveDataMask" />
+                </jsonGeneratorDecorator>-->
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="jsonConsoleAppender"/>
+        </root>
+    </springProfile>
+
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+</configuration>

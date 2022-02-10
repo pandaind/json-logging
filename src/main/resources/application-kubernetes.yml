@@ -1,0 +1,13 @@
+debug: true
+
+camel:
+  springboot:
+    log-mask: true
+    use-mdc-logging: true
+
+application:
+  log:
+    mdc-header-names:
+      - CoupaInvoiceId
+      - CoupaInvoiceNumber
+      - CoupaPassword

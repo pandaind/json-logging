@@ -1,0 +1,10 @@
+debug: true
+
+camel:
+  springboot:
+    log-mask: true
+    use-mdc-logging: true
+
+#logging:
+#  pattern:
+#    console: "{\"time\": \"%d\", \"level\": \"%p\", \"%t\": \"%logger{63}:%L\", \"message\": \"%replace(%m%wEx{6}){'[\r\n]+', '\\n'}%nopex\"}%n"
